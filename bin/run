@@ -4,6 +4,8 @@ require_relative '../config/environment.rb'
 
 API.new.get_data
 
-binding.pry
 
-puts "I am running ruby"
+binding.pry
+def greeting
+    puts "Hello, how many players are there today?"
+end
