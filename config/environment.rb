@@ -1,6 +1,7 @@
 require 'pry'
 require 'httparty'
 
-test
 
-require_relative '../lib/test'
+require_relative '../lib/cli'
+require_relative '../lib/api'
+require_relative '../lib/clue'
