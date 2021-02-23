@@ -1,0 +1,7 @@
+#!/usr/bin/env ruby
+
+require_relative '../config/environment.rb'
+
+API.new.get_data
+
+puts "I am running ruby"
