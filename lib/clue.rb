@@ -3,23 +3,27 @@ class Clue
 
     attr_accessor :id, :value, :question, :answer, :category, :airdate
 
-    def initialize(trivia_hash, category)
+    def initialize(trivia_hash)
         @id = trivia_hash['id']
+        if trivia_hash['value'] == nil
+            @value = 200
+        else
         @value = trivia_hash['value']
+        end
         @question = trivia_hash['question']
         @answer = trivia_hash['answer']
         @airdate = trivia_hash['airdate']
-        @category = category
+        # @category = trivia_hash['category']['title']
         # trivia_hash.each do |key, value| 
         # self.class.attr_accessor(key)           
         # self.send("#{key}=", value)
         @@all << self
         # binding.pry
-        find_or_create_category(category)
+        find_or_create_category(trivia_hash['category']['title'])
+        add_clue_to_category(self)
     end
 
     def create_category(category)  
-        # binding.pry
         self.category = Category.new(category)
     end
 
@@ -30,34 +34,20 @@ class Clue
     end
 
     def find_or_create_category(category)
-        if find_category_by_title(category)
+        object = find_category_by_title(category)
+        if object
+            self.category = object
         else
             create_category(category)
         end
     end
 
-
-    # def category=(category)
-    #     @category = category
-    #     if category
-    #         binding.pry
-    #         category.add_clue(self)
-    #     end
-    # end
+    def add_clue_to_category(clue)
+        category.add_clue(clue)
+    end
 
     def self.all
         @@all
     end
-
-    # def find_category
-    #     binding.pry
-    #     Category.all.find do |x|
-    #         binding.pry
-    #         x.title == self.category['title']
-    #     end
-    # end
-
-
-
 
 end

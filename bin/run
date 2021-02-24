@@ -4,6 +4,8 @@ require_relative '../config/environment.rb'
 
 API.new.get_data
 
+Category.find_category('australia', 5)
+
 
 binding.pry
 def greeting
