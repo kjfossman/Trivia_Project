@@ -18,17 +18,20 @@ class Category
         end
     end
 
-    def self.find_category(title, id) 
-        binding.pry   
-        cat_object = self.all.find do |x|
+    def self.find_category(title, id)   
+        
+        object = self.all.find do |x|
                     x.title == title
                     end
-        cat_object.find_question(id)
+        object.find_question(id)
     end
 
-    def find_question(value)
-        binding.pry
-            
+    def find_question(id)
+        q = self.clues.find do |x|
+                    x.id == id
+                    end
+        q
+        binding.pry            
     end
 
     # def display_question(value)

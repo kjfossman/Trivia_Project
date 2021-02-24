@@ -5,11 +5,11 @@ class Clue
 
     def initialize(trivia_hash)
         @id = trivia_hash['id']
-        if trivia_hash['value'] == nil
-            @value = 200
-        else
-        @value = trivia_hash['value']
-        end
+        # if trivia_hash['value'] == nil
+        #     @value = 200
+        # else
+        self.value = trivia_hash['value']
+        # end
         @question = trivia_hash['question']
         @answer = trivia_hash['answer']
         @airdate = trivia_hash['airdate']
@@ -18,9 +18,23 @@ class Clue
         # self.class.attr_accessor(key)           
         # self.send("#{key}=", value)
         @@all << self
-        # binding.pry
+        destroy(trivia_hash['question'])
         find_or_create_category(trivia_hash['category']['title'])
         add_clue_to_category(self)
+    end
+
+    def value=(value)
+        if value == nil 
+            @value = 200
+        else 
+            @value = value
+        end
+    end
+
+    def destroy(question)
+        if question == ""
+            @@all.delete(self)
+        end
     end
 
     def create_category(category)  
