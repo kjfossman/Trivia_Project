@@ -48,6 +48,9 @@ class Clue
     end
 
     def find_or_create_category(category)
+        if !@@all.include?(self)
+            return true
+        end
         object = find_category_by_title(category)
         if object
             self.category = object
@@ -57,6 +60,9 @@ class Clue
     end
 
     def add_clue_to_category(clue)
+        if !@@all.include?(self)
+            return true
+        end
         category.add_clue(clue)
     end
 

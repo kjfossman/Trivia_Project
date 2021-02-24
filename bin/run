@@ -4,7 +4,9 @@ require_relative '../config/environment.rb'
 
 API.new.get_data
 
-Category.find_category('odd jobs', 29)
+CLI.new.greeting
+
+# Category.find_category('odd jobs', 29)
 
 
 binding.pry

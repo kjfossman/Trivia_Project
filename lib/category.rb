@@ -34,6 +34,19 @@ class Category
         binding.pry            
     end
 
+    # list = []
+    # Category.all.each do |x|
+    #     list << x.clues
+    # end
+    # clue_count = []
+    # list.each do |x|
+    #     x.each do |y|
+    #         clue_count << y.id
+    #     end
+    # end
+    # clue_count.count
+
+
     # def display_question(value)
 
 
