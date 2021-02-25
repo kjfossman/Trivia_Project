@@ -29,11 +29,10 @@ class CLI
     end
 
     def valid_choice?(index)
-        !@board[index].is_a?(String)
+        binding.pry
+        index.between?(0, @board.count) && !@board[index].is_a?(String)
     end
-        # @board[index].is_a?(String) || 
     
-
     def choose_clue
         puts "Select from available clues"
         input = input_to_index(gets)
@@ -67,7 +66,7 @@ class CLI
         @board.each.with_index(1) do |x, index|
             display << "#{index}: $#{x.value}"
         end
-        binding.pry
+
         puts @board[0].category.title.upcase
         puts display
     end
