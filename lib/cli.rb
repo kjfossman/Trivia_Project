@@ -15,18 +15,61 @@ class CLI
         puts "Hello are there one or two trivia players today?"
         puts "Enter one or two"
         # input = gets
-        display_categories
+        play_category_game
         # random_game
         # play_board_random
     end
 
-    def random_game
-        random_clues
-        play_board_random
+    def play_category_game
+        display_categories
+        ask_for_input_category
+        play_board_category
+        # until @board
+        choose_clue
     end
 
-    def game_by_category
-        
+    def valid_choice?(index)
+        !@board[index].is_a?(String)
+    end
+        # @board[index].is_a?(String) || 
+    
+
+    def choose_clue
+        puts "Select from available clues"
+        input = input_to_index(gets)
+        until valid_choice?(input) do 
+            puts "Not a valid choice, please select again"
+            input = input_to_int(gets)
+        end
+        puts "Question: #{@board[input].question}"
+        gets
+        puts "Answer: #{@board[input].answer}"
+        gets   
+    end
+
+    def display_categories
+        @board = Category.display_categories
+    end
+
+    def ask_for_input_category
+        puts "Select the category number that you would like to play"
+        input = input_to_int(gets)
+        until input.between?(1, Category.all.count) do 
+            puts "Not a valid choice, please select again"
+            input = input_to_int(gets)
+        end
+        input = input_to_index(input)
+        choose_category(input)
+    end
+
+    def play_board_category
+        display = []
+        @board.each.with_index(1) do |x, index|
+            display << "#{index}: $#{x.value}"
+        end
+        binding.pry
+        puts @board[0].category.title.upcase
+        puts display
     end
 
     def play_board_random
@@ -36,38 +79,23 @@ class CLI
             display << ""
         end 
         puts display
-        # binding.pry
-    end
-
-    def play_board_category
-        display = []
-        binding.pry
-        @board.clues.each.with_index(1) do |x, index|
-            display << "#{index}: $#{x.value}"
-        end
-        binding.pry
-        puts @board.title.upcase
-        puts display
     end
 
     def choose_category(input)
         @board = @board[input]
-        binding.pry
-        play_board_category
+            @board = @board.clues.collect do |x|
+                x.id
+            end
+            @board = Clue.all.select do |x|
+                @board.include?(x.id)
+            end
+    end
+ 
+    def random_game
+        random_clues
+        play_board_random
     end
 
-    def display_categories
-        @board = Category.display_categories
-        puts "Select the category number that you would like to play"
-        input = input_to_int(gets)
-        until input.between?(1, Category.all.count) do 
-        puts "Not a valid choice, please select again"
-        input = input_to_int(gets)
-        end
-        input = input_to_index(input)
-        binding.pry
-        choose_category(input)
-    end
 
     def random_clues
         @board = Clue.all.sample(12)
