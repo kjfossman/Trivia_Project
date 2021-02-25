@@ -1,19 +1,24 @@
 require 'pry'
 require 'awesome_print'
+ 
 
 
 class CLI
-    attr_accessor :board
+    attr_accessor :board, :category_display, :player_1, :player_2
     attr_reader :play_board
     
     def initialize
-        @board = ['initialize', 2]
+        @board = [2, 2]
         greeting
     end
 
     def greeting
-        puts "Hello are there one or two trivia players today?"
-        puts "Enter one or two"
+        puts "Hello who are the two trivia players today?...Type Player 1's name to get started!"
+        @player_1 = Player.new(gets.chomp)
+        puts "Welcome #{player_1.name} good luck today! Player 2 please enter your name!"
+        @player_2 = Player.new(gets.chomp)
+        puts "Good luck #{player_2.name}"
+        # puts "Enter one or two"
         # input = gets
         play_category_game
         # random_game
@@ -27,13 +32,30 @@ class CLI
             play_board_category
             choose_clue
         end
+        winner_loser
     end
+    
+    def winner_loser
+        binding.pry
+        if @player_1.score > @player_2.score 
+               ap "#{@player_1.name} WINS with $#{player_1.score}!"
+               puts "#{@player_2.name} Loses with $#{player_2.score}!"
+        elsif @player_2.score > @player_1.score
+               ap "#{@player_2.name} WINS with $#{player_2.score}!"
+               puts "#{@player_1.name} LOSES with $#{player_1.score}!" 
+        else
+               puts "#{@player_2.name} and #{@player_1.name} tie with $#{@player_2.score}!"
+        end
+    end
+
 
     def log_result(input, result)
         if result == 1 
-            @board[input] = "CORRECT"
+            current_player.score += @board[input].value
+            @board[input] = "CORRECT (#{current_player.name} + $#{@board[input].value})"
         else
-            @board[input] = "INCORRECT"
+            current_player.score -= @board[input].value
+            @board[input] = "INCORRECT (#{current_player.name} - $#{@board[input].value})"
         end
     end
 
@@ -86,7 +108,7 @@ class CLI
                 display << "#{index}: #{x}"
             end
         end
-        puts @board[0].category.title.upcase
+        puts "#{@category_display} - #{current_player.name} please choose a clue"
         puts display
     end
 
@@ -107,6 +129,7 @@ class CLI
             @board = Clue.all.select do |x|
                 @board.include?(x.id)
             end
+        @category_display = @board[0].category.title.upcase    
     end
  
     def random_game
@@ -131,6 +154,14 @@ class CLI
     def input_to_int(input)
         input = input.to_i
         return input
+    end
+
+    def turn_count
+        @board.count - @board.select.count {|x| x.is_a?(String)}
+    end
+
+    def current_player
+        turn_count % 2 == 0 ? @player_2 : @player_1
     end
 
 end
