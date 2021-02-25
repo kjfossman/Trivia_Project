@@ -10,6 +10,7 @@ class CLI
     def initialize
         @board = [2, 2]
         greeting
+        choose_game
     end
 
     def greeting
@@ -17,13 +18,26 @@ class CLI
         @player_1 = Player.new(gets.chomp)
         puts "Welcome #{player_1.name} good luck today! Player 2 please enter your name!"
         @player_2 = Player.new(gets.chomp)
-        puts "Good luck #{player_2.name}"
-        # puts "Enter one or two"
-        # input = gets
-        play_category_game
-        # random_game
-        # play_board_random
+        puts "Good luck #{player_2.name}" 
+        puts ""
     end
+
+    def choose_game
+        puts 'Type category to choose the category you would like to compete in'
+        puts 'Type random to play a game with randomly generated clues'
+        puts 'Type anything else to quit'
+        input = gets.chomp
+        case input
+            when 'category' then play_category_game
+            when 'random' then play_random_game
+            else return 'quit' 
+        end
+        puts ""
+        ap "#{@player_1.name}"
+        @player_1.stats
+        ap "#{@player_2.name}"
+        @player_2.stats
+    end        
 
     def play_category_game
         display_categories
@@ -34,9 +48,23 @@ class CLI
         end
         winner_loser
     end
+
+    def play_random_game
+        puts "How many clues would you like to have? type a number between 2-20"
+        input = input_to_int(gets)
+        until input.between?(2, 20)
+            puts "Not a valid choice, please select again"
+            input = input_to_int(gets)
+        end
+        random_clues(input)
+        until board_empty(@board) do
+            play_board_random
+            choose_clue
+        end
+        winner_loser
+    end
     
     def winner_loser
-        binding.pry
         if @player_1.score > @player_2.score 
                ap "#{@player_1.name} WINS with $#{player_1.score}!"
                puts "#{@player_2.name} Loses with $#{player_2.score}!"
@@ -48,28 +76,29 @@ class CLI
         end
     end
 
-
     def log_result(input, result)
         if result == 1 
+            current_player.correct += 1
             current_player.score += @board[input].value
             @board[input] = "CORRECT (#{current_player.name} + $#{@board[input].value})"
         else
+            current_player.incorrect += 1
             current_player.score -= @board[input].value
             @board[input] = "INCORRECT (#{current_player.name} - $#{@board[input].value})"
         end
     end
 
     def valid_choice?(index)
-        index.between?(0, @board.count) && !@board[index].is_a?(String)
+        index.between?(0, @board.count - 1) && !@board[index].is_a?(String)
     end
     
     def choose_clue
-        puts "Select from available clues"
         input = input_to_index(gets)
         until valid_choice?(input) do 
             puts "Not a valid choice, please select again"
             input = input_to_index(gets)
         end
+        puts "Category: #{@board[input].category.title.upcase}"
         puts "Question: #{@board[input].question}"
         puts "Type your answer here:"
         gets 
@@ -108,16 +137,20 @@ class CLI
                 display << "#{index}: #{x}"
             end
         end
-        puts "#{@category_display} - #{current_player.name} please choose a clue"
+        ap "#{@category_display} - #{current_player.name} please choose a clue"
         puts display
     end
 
     def play_board_random
         display = []
         @board.each.with_index(1) do |x, index|
-            display << "#{index}: #{x.category.title} $#{x.value}"
-            display << ""
+            if !x.is_a?(String) 
+                display << "#{index}: #{x.category.title} $#{x.value}"
+            else 
+                display << "#{index}: #{x}"
+            end
         end 
+        ap "#{current_player.name.upcase} PLEASE CHOOSE ONE FROM THE FOLLOWING"
         puts display
     end
 
@@ -132,14 +165,8 @@ class CLI
         @category_display = @board[0].category.title.upcase    
     end
  
-    def random_game
-        random_clues
-        play_board_random
-    end
-
-
-    def random_clues
-        @board = Clue.all.sample(12)
+    def random_clues(int)
+        @board = Clue.all.sample(int)
     end
 
     def board_empty(board)
