@@ -7,7 +7,7 @@ class CLI
     attr_reader :play_board
     
     def initialize
-        @board = Array.new(12, " ")
+        @board = ['initialize', 2]
         greeting
     end
 
@@ -23,13 +23,21 @@ class CLI
     def play_category_game
         display_categories
         ask_for_input_category
-        play_board_category
-        # until @board
-        choose_clue
+        until board_empty(@board) do 
+            play_board_category
+            choose_clue
+        end
+    end
+
+    def log_result(input, result)
+        if result == 1 
+            @board[input] = "CORRECT"
+        else
+            @board[input] = "INCORRECT"
+        end
     end
 
     def valid_choice?(index)
-        binding.pry
         index.between?(0, @board.count) && !@board[index].is_a?(String)
     end
     
@@ -38,12 +46,20 @@ class CLI
         input = input_to_index(gets)
         until valid_choice?(input) do 
             puts "Not a valid choice, please select again"
-            input = input_to_int(gets)
+            input = input_to_index(gets)
         end
         puts "Question: #{@board[input].question}"
-        gets
+        puts "Type your answer here:"
+        gets 
+        sleep(1)
         puts "Answer: #{@board[input].answer}"
-        gets   
+        puts "You are the judge was that correct 1 = Yes 2 = No"
+        result = input_to_int(gets)
+        until result == 1 || result == 2
+            puts "Invalid result, please type 1 or 2"
+            result = input_to_int(gets)
+        end
+        log_result(input, result)
     end
 
     def display_categories
@@ -64,9 +80,12 @@ class CLI
     def play_board_category
         display = []
         @board.each.with_index(1) do |x, index|
+            if !x.is_a?(String) 
             display << "#{index}: $#{x.value}"
+            else 
+                display << "#{index}: #{x}"
+            end
         end
-
         puts @board[0].category.title.upcase
         puts display
     end
@@ -100,8 +119,8 @@ class CLI
         @board = Clue.all.sample(12)
     end
 
-    def board_full
-        @board.none?(" ")
+    def board_empty(board)
+        board.all?(String)
     end
 
     def input_to_index(input)
