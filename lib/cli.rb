@@ -32,6 +32,7 @@ class CLI
             when 'random' then play_random_game
             else return 'quit' 
         end
+        sleep(2)
         puts ""
         ap "#{@player_1.name}"
         @player_1.stats
