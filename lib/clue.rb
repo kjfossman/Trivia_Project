@@ -1,26 +1,18 @@
 class Clue
     @@all = []
 
-    attr_accessor :id, :value, :question, :answer, :category, :airdate
-
+    attr_accessor :value, :category
+    attr_reader :answer, :question, :id
+    
     def initialize(trivia_hash)
         @id = trivia_hash['id']
-        # if trivia_hash['value'] == nil
-        #     @value = 200
-        # else
         self.value = trivia_hash['value']
-        # end
         @question = trivia_hash['question']
         @answer = trivia_hash['answer']
         @airdate = trivia_hash['airdate']
-        # @category = trivia_hash['category']['title']
-        # trivia_hash.each do |key, value| 
-        # self.class.attr_accessor(key)           
-        # self.send("#{key}=", value)
         @@all << self
-        destroy(trivia_hash['question'])
         find_or_create_category(trivia_hash['category']['title'])
-        add_clue_to_category(self)
+        add_clue_to_category
     end
 
     def value=(value)
@@ -28,12 +20,6 @@ class Clue
             @value = 200
         else 
             @value = value
-        end
-    end
-
-    def destroy(question)
-        if question == ""
-            @@all.delete(self)
         end
     end
 
@@ -48,9 +34,6 @@ class Clue
     end
 
     def find_or_create_category(category)
-        if !@@all.include?(self)
-            return true
-        end
         object = find_category_by_title(category)
         if object
             self.category = object
@@ -59,11 +42,8 @@ class Clue
         end
     end
 
-    def add_clue_to_category(clue)
-        if !@@all.include?(self)
-            return true
-        end
-        category.add_clue(clue)
+    def add_clue_to_category
+        category.add_clue(self)
     end
 
     def self.all
@@ -71,3 +51,21 @@ class Clue
     end
 
 end
+
+    # def destroy(question)
+    #     if question == ""
+    #         @@all.delete(self)
+    #     end
+    # end
+
+            # if !@@all.include?(self)
+        #     return true
+        # end
+
+                # if !@@all.include?(self)
+        #     return true
+        # end
+
+     # trivia_hash.each do |key, value| 
+        # self.class.attr_accessor(key)           
+        # self.send("#{key}=", value)    

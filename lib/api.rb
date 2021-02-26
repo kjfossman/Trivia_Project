@@ -11,8 +11,8 @@ class API
     end
 
     def create_trivia_objects(trivia_array)
-        trivia_array.each do |trivia_hash|     
-            Clue.new(trivia_hash)    
+        trivia_array.each do |trivia_hash| 
+            Clue.new(trivia_hash) unless trivia_hash['question'] == ""   
         end
     end
 end

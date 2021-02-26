@@ -1,6 +1,7 @@
 class Category
     @@all = []
-    attr_accessor :title, :clues, :question, :answer, :value
+    
+    attr_reader :title, :clues, :question, :answer, :value
 
     def initialize(title)
         @title = title
@@ -19,7 +20,6 @@ class Category
     end
 
     def self.find_category(title, id)   
-        
         object = self.all.find do |x|
                     x.title == title
                     end

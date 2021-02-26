@@ -10,6 +10,4 @@ CLI.new
 
 
 
-def greeting
-    puts "Hello, how many players are there today?"
-end
+

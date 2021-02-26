@@ -4,8 +4,6 @@ require 'awesome_print'
 
 
 class CLI
-    attr_accessor :board, :category_display, :player_1, :player_2
-    attr_reader :play_board
     
     def initialize
         @board = [2, 2]
@@ -14,12 +12,13 @@ class CLI
     end
 
     def greeting
+        play_category_game
         puts "Hello who are the two trivia players today?...Type Player 1's name to get started!"
         @player_1 = Player.new(gets.chomp)
-        puts "Welcome #{player_1.name} good luck today! Player 2 please enter your name!"
+        puts "Welcome #{@player_1.name} good luck today! Player 2 please enter your name!"
         @player_2 = Player.new(gets.chomp)
-        puts "Good luck #{player_2.name}" 
-        puts ""
+        puts "Good luck #{@player_2.name}\n\n" 
+        # puts ""
     end
 
     def choose_game
@@ -67,11 +66,11 @@ class CLI
     
     def winner_loser
         if @player_1.score > @player_2.score 
-               ap "#{@player_1.name} WINS with $#{player_1.score}!"
-               puts "#{@player_2.name} Loses with $#{player_2.score}!"
+               ap "#{@player_1.name} WINS with $#{@player_1.score}!"
+               puts "#{@player_2.name} Loses with $#{@player_2.score}!"
         elsif @player_2.score > @player_1.score
-               ap "#{@player_2.name} WINS with $#{player_2.score}!"
-               puts "#{@player_1.name} LOSES with $#{player_1.score}!" 
+               ap "#{@player_2.name} WINS with $#{@player_2.score}!"
+               puts "#{@player_1.name} LOSES with $#{@player_1.score}!" 
         else
                puts "#{@player_2.name} and #{@player_1.name} tie with $#{@player_2.score}!"
         end
@@ -156,6 +155,7 @@ class CLI
     end
 
     def choose_category(input)
+        binding.pry
         @board = @board[input]
             @board = @board.clues.collect do |x|
                 x.id
