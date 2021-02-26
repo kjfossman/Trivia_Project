@@ -12,7 +12,6 @@ class CLI
     end
 
     def greeting
-        play_category_game
         puts "Hello who are the two trivia players today?...Type Player 1's name to get started!"
         @player_1 = Player.new(gets.chomp)
         puts "Welcome #{@player_1.name} good luck today! Player 2 please enter your name!"
@@ -155,7 +154,7 @@ class CLI
     end
 
     def choose_category(input)
-        binding.pry
+        # binding.pry
         @board = @board[input]
             @board = @board.clues.collect do |x|
                 x.id

@@ -2,7 +2,14 @@
 Phase 1 Project Flatiron
 
 ## Motivation 
-    - I started this project to give a quick easy way to play trivia games with friends.
+    - I started this project to give a quick easy way to play trivia games with friends
+
+## Installation
+    - Fork repo and clone to your local machine
+
+## Usage 
+    - To run this application execute 
+      ruby bin/run
 
 ## Language
     - This project is coded in Ruby, using Ruby 2.6.1
@@ -17,7 +24,7 @@ Phase 1 Project Flatiron
     - The app automatically tracks the score of your paticular game and declares a winner when
       there are no clues left to choose from.  
 
-## How to use?
+## How it Works
     - Simply run the "ruby bin/run" file and follow along with the prompts to get a game started. 
     - This will get you started in the game that you choose. When answering questions you will 
       be prompted to enter whether you got it correct or incorrect. This is to avoid a question
@@ -25,8 +32,11 @@ Phase 1 Project Flatiron
     - Once you and a friend have answered all the questions, you are finished and to play again 
       run "ruby bin/run"
 
+## Contributing
+    Pull requests and bug reports are welcome on https://github.com/kjfossman/Trivia_Project. Everyone interacting with this project is expected to follow the Code of Conduct.  
+
 ### API Reference    
     - "http://jservice.io/api/clues"
 
 ### License
-    - MIT © kjfossman    
+    - MIT License © kjfossman    
