@@ -33,7 +33,7 @@ Phase 1 Project Flatiron
       run "ruby bin/run"
 
 ## Contributing
-    Pull requests and bug reports are welcome on https://github.com/kjfossman/Trivia_Project. Everyone interacting with this project is expected to follow the Code of Conduct.  
+    - Pull requests and bug reports are welcome on https://github.com/kjfossman/Trivia_Project. Everyone interacting with this project is expected to follow the Code of Conduct.  
 
 ### API Reference    
     - "http://jservice.io/api/clues"
