@@ -1,6 +1,6 @@
 class Category
     @@all = []
-    
+
     attr_reader :title, :clues, :question, :answer, :value
 
     def initialize(title)
@@ -34,6 +34,13 @@ class Category
         binding.pry            
     end
 
+    def self.all
+        @@all
+    end
+
+end
+
+
     # list = []
     # Category.all.each do |x|
     #     list << x.clues
@@ -48,11 +55,3 @@ class Category
 
 
     # def display_question(value)
-
-
-
-    def self.all
-        @@all
-    end
-
-end

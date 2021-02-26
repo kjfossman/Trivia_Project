@@ -1,7 +1,8 @@
 class Player
     @@all = []
 
-    attr_accessor :name, :score, :stats, :correct, :incorrect
+    attr_accessor :stats, :correct, :incorrect, :score
+    attr_reader :name
     
     def initialize(name)
         @name = name
